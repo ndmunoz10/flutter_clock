@@ -94,20 +94,19 @@ class Node {
           List<Direction> dirAvailableList = [
             Direction.BOTTOM_RIGHT,
           ];
-
-          //if y invalid and x valid
           if (position.dy <= 5.0 && position.dx > 5.0) {
-            dirAvailableList.add(Direction.LEFT);
-            dirAvailableList.add(Direction.RIGHT);
-            dirAvailableList.add(Direction.BOTTOM);
-            dirAvailableList.add(Direction.BOTTOM_LEFT);
+            dirAvailableList
+              ..add(Direction.LEFT)
+              ..add(Direction.RIGHT)
+              ..add(Direction.BOTTOM)
+              ..add(Direction.BOTTOM_LEFT);
           }
-          //if x invalid and y valid
           if (position.dx <= 5.0 && position.dy > 5.0) {
-            dirAvailableList.add(Direction.TOP);
-            dirAvailableList.add(Direction.RIGHT);
-            dirAvailableList.add(Direction.BOTTOM);
-            dirAvailableList.add(Direction.TOP_RIGHT);
+            dirAvailableList
+              ..add(Direction.TOP)
+              ..add(Direction.RIGHT)
+              ..add(Direction.BOTTOM)
+              ..add(Direction.TOP_RIGHT);
           }
           direction = dirAvailableList[random.nextInt(dirAvailableList.length)];
           size = (2 + random.nextInt(7)).toDouble();
@@ -122,17 +121,19 @@ class Node {
 
           //if y invalid and x valid
           if (position.dy <= 5.0 && position.dx < screenSize.width - 5.0) {
-            dirAvailableList.add(Direction.LEFT);
-            dirAvailableList.add(Direction.RIGHT);
-            dirAvailableList.add(Direction.BOTTOM);
-            dirAvailableList.add(Direction.BOTTOM_RIGHT);
+            dirAvailableList
+              ..add(Direction.LEFT)
+              ..add(Direction.RIGHT)
+              ..add(Direction.BOTTOM)
+              ..add(Direction.BOTTOM_RIGHT);
           }
           //if x invalid and y valid
           if (position.dx >= screenSize.width - 5.0 && position.dy > 5.0) {
-            dirAvailableList.add(Direction.TOP);
-            dirAvailableList.add(Direction.BOTTOM);
-            dirAvailableList.add(Direction.LEFT);
-            dirAvailableList.add(Direction.TOP_LEFT);
+            dirAvailableList
+              ..add(Direction.TOP)
+              ..add(Direction.BOTTOM)
+              ..add(Direction.LEFT)
+              ..add(Direction.TOP_LEFT);
           }
           direction = dirAvailableList[random.nextInt(dirAvailableList.length)];
           size = (2 + random.nextInt(7)).toDouble();
@@ -146,17 +147,19 @@ class Node {
           ];
           //if y invalid and x valid
           if (position.dy >= screenSize.height - 5.0 && position.dx > 5.0) {
-            dirAvailableList.add(Direction.LEFT);
-            dirAvailableList.add(Direction.RIGHT);
-            dirAvailableList.add(Direction.TOP);
-            dirAvailableList.add(Direction.TOP_LEFT);
+            dirAvailableList
+              ..add(Direction.LEFT)
+              ..add(Direction.RIGHT)
+              ..add(Direction.TOP)
+              ..add(Direction.TOP_LEFT);
           }
           //if x invalid and y valid
           if (position.dx <= 5.0 && position.dy < screenSize.height - 5.0) {
-            dirAvailableList.add(Direction.TOP);
-            dirAvailableList.add(Direction.BOTTOM);
-            dirAvailableList.add(Direction.RIGHT);
-            dirAvailableList.add(Direction.BOTTOM_RIGHT);
+            dirAvailableList
+              ..add(Direction.TOP)
+              ..add(Direction.BOTTOM)
+              ..add(Direction.RIGHT)
+              ..add(Direction.BOTTOM_RIGHT);
           }
           direction = dirAvailableList[random.nextInt(dirAvailableList.length)];
           size = (2 + random.nextInt(7)).toDouble();
@@ -172,18 +175,20 @@ class Node {
           //if y invalid and x valid
           if (position.dy >= screenSize.height - 5.0 &&
               position.dx < screenSize.width - 5.0) {
-            dirAvailableList.add(Direction.LEFT);
-            dirAvailableList.add(Direction.RIGHT);
-            dirAvailableList.add(Direction.TOP);
-            dirAvailableList.add(Direction.TOP_RIGHT);
+            dirAvailableList
+              ..add(Direction.LEFT)
+              ..add(Direction.RIGHT)
+              ..add(Direction.TOP)
+              ..add(Direction.TOP_RIGHT);
           }
           //if x invalid and y valid
           if (position.dx >= screenSize.width - 5.0 &&
               position.dy < screenSize.height - 5.0) {
-            dirAvailableList.add(Direction.TOP);
-            dirAvailableList.add(Direction.BOTTOM);
-            dirAvailableList.add(Direction.LEFT);
-            dirAvailableList.add(Direction.BOTTOM_LEFT);
+            dirAvailableList
+              ..add(Direction.TOP)
+              ..add(Direction.BOTTOM)
+              ..add(Direction.LEFT)
+              ..add(Direction.BOTTOM_LEFT);
           }
           direction = dirAvailableList[random.nextInt(dirAvailableList.length)];
           size = (2 + random.nextInt(7)).toDouble();

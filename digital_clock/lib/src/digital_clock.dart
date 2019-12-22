@@ -1,9 +1,9 @@
-import 'dart:async';
-
+import 'package:digital_clock/src/time_text.dart';
 import 'package:digital_clock/src/node.dart';
 import 'package:digital_clock/src/utils/clock_painter.dart';
+import 'package:digital_clock/src/vos/time_segment_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class DigitalSandClock extends StatefulWidget {
 
@@ -13,7 +13,6 @@ class DigitalSandClock extends StatefulWidget {
 
 class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderStateMixin{
 
-  DateTime _dateTime;
   AnimationController animationController;
   final nodeList = <Node>[];
   final numNodes = 20;
@@ -21,9 +20,6 @@ class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderS
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
-    _dateTime = DateTime.now();
-    //_setTimer();
     _initializeAnimation();
   }
 
@@ -37,25 +33,59 @@ class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderS
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     _initializeNodeList(context, size);
-    return MaterialApp(
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      home: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Container(
-          child: AnimatedBuilder(
-            animation: CurvedAnimation(
-              parent: animationController,
-              curve: Curves.easeInOut
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: Container(
+        child: Stack(
+          children: <Widget>[
+            AnimatedBuilder(
+                animation: CurvedAnimation(
+                    parent: animationController,
+                    curve: Curves.easeInOut
+                ),
+                builder: (context, child) => CustomPaint(
+                  painter: ClockPainter(
+                      brightness: MediaQuery.of(context).platformBrightness,
+                      nodeList: nodeList
+                  ),
+                  size: size,
+                )
             ),
-            builder: (context, child) => CustomPaint(
-              painter: ClockPainter(
-                brightness: MediaQuery.of(context).platformBrightness,
-                nodeList: nodeList
+            ChangeNotifierProvider(
+              create: (context) => TimeModel(),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 5,
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: TimeText(
+                                isHour: true,
+                              )
+                          ),
+                        ),
+                        Flexible(
+                          flex: 5,
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: TimeText(
+                                isHour: false,
+                              )
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
-              size: size,
             )
-          ),
+          ],
         ),
       ),
     );
@@ -79,24 +109,5 @@ class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderS
         }
       })
       ..repeat();
-  }
-
-  String _parseTimeFormat(int time) {
-    if (time is int) {
-      return time < 10 ? "0$time" : time.toString();
-    } else {
-      return "";
-    }
-  }
-
-  void _setTimer() {
-    _dateTime = DateTime.now();
-    Timer(
-      Duration(seconds: 1) - Duration(milliseconds: _dateTime.millisecond),
-      _setTimer
-    );
-    setState(() {
-
-    });
   }
 }
