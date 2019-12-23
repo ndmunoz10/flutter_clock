@@ -7,6 +7,7 @@ class TimeModel extends ChangeNotifier {
   String _minute;
   String _seconds;
   int _timePassedInSeconds;
+  bool _isNight;
 
   TimeModel() {
     _setTimer();
@@ -16,12 +17,18 @@ class TimeModel extends ChangeNotifier {
   String get minute => _minute;
   String get seconds => _seconds;
   int get timePassed => _timePassedInSeconds;
+  bool get isNight => _isNight;
 
   void _updateHour() {
     _hour = _parseTimeFormat(_dateTime.hour);
     _minute = _parseTimeFormat(_dateTime.minute);
     _seconds = _parseTimeFormat(_dateTime.second);
-    DateTime subtractedDateTime = _dateTime.subtract(Duration(hours: _dateTime.hour >= 18 || _dateTime.hour <= 6 ? 18 : 6));
+    if (_dateTime.hour >= 18 || _dateTime.hour <= 6) {
+      _isNight = true;
+    } else {
+      _isNight = false;
+    }
+    DateTime subtractedDateTime = _dateTime.subtract(Duration(hours: isNight ? 18 : 6));
     _timePassedInSeconds = (subtractedDateTime.hour * 60 * 60) + subtractedDateTime.minute * 60 + subtractedDateTime.second;
     print(_timePassedInSeconds);
     notifyListeners();

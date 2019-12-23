@@ -81,7 +81,7 @@ class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderS
                   top: size.height * 0.15,
                   right: (timeModel.timePassed / SECONDS_12H) * (size.width - 130),
                   child: SvgPicture.asset(
-                      "assets/images/moon_2.svg",
+                      "assets/images/${timeModel.isNight ? "moon_2" : "sun"}.svg",
                       width: 130,
                       height: 130
                   ),
