@@ -1,40 +1,61 @@
-import 'package:digital_clock/src/node.dart';
+import 'dart:ui';
+import 'package:digital_clock/src/vos/decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ClockPainter extends CustomPainter {
 
-  final List<Node> nodeList;
+  final List<Flying> flyingList;
   final Brightness brightness;
 
   ClockPainter({
-    @required this.nodeList,
+    @required this.flyingList,
     @required this.brightness
   });
 
-  void draw(Node parentNode, Canvas canvas, Paint circlePaint, Paint linePaint) {
-    canvas.drawCircle(parentNode.position, parentNode.size, circlePaint);
+  void _drawStaticStars(Canvas canvas, Size size) {
+    final width = size.width;
+    final height = size.height;
+    final pointMode = PointMode.points;
+    final List<Offset> points = [
+      Offset(width * 0.2, height * 0.2),
+      Offset(width * 0.2, height * 0.6),
+      Offset(width * 0.3, height * 0.7),
+      Offset(width * 0.4, height * 0.2),
+      Offset(width * 0.3, height * 0.8),
+      Offset(width * 0.2, height * 0.9),
+      Offset(width * 0.3, height * 0.3),
+      Offset(width * 0.6, height * 0.5),
+      Offset(width * 0.8, height * 0.7),
+      Offset(width * 0.9, height * 0.9),
+      Offset(width * 0.9, height * 0.1),
+      Offset(width * 0.8, height * 0.3),
+      Offset(width * 0.8, height * 0.4),
+      Offset(width * 0.7, height * 0.3),
+      Offset(width * 0.5, height * 0.5),
+      Offset(width * 0.3, height * 0.4)
+    ];
+    final paint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 5
+      ..strokeCap = StrokeCap.round;
+    canvas.drawPoints(pointMode, points, paint);
+  }
 
-    parentNode.connected.forEach((id, node) {
-      canvas.drawLine(parentNode.position, node.position, linePaint);
-    });
+  void _drawFlyingElements(Canvas canvas) {
+    Paint paint = Paint()
+      ..strokeWidth = 3
+      ..color = Colors.white
+      ..style = PaintingStyle.stroke;
+    for (var flying in flyingList) {
+      canvas.drawLine(flying.currentStartingPosition, flying.currentEndingPosition, paint);
+    }
   }
 
   @override
-  void paint(Canvas canvas, Size size) {
-    Paint circlePaint = Paint()
-      ..strokeWidth = 4
-      ..color = Colors.deepOrange
-      ..style = PaintingStyle.fill;
-
-    Paint linePaint = Paint()
-      ..strokeWidth = 0.5
-      ..color = brightness == Brightness.light ? Color(0xff000000) : Color(0xffffffff)
-      ..style = PaintingStyle.stroke;
-
-    for (var node in nodeList) {
-      draw(node, canvas, circlePaint, linePaint);
-    }
+  void paint(Canvas canvas, Size size) async {
+    _drawStaticStars(canvas, size);
+    _drawFlyingElements(canvas);
   }
 
   @override
