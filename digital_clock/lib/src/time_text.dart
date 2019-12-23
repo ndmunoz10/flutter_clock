@@ -6,22 +6,31 @@ import 'package:provider/provider.dart';
 
 class TimeText extends StatelessWidget {
 
-  final isHour;
+  final String timeText;
+  final double fontSize;
+  final FontWeight fontWeight;
+  final TextAlign textAlign;
 
-  TimeText({@required this.isHour});
+  TimeText({
+    @required this.timeText,
+    @required this.fontSize,
+    @required this.fontWeight,
+    this.textAlign = TextAlign.center
+  });
 
   @override
   Widget build(BuildContext context) {
     return Consumer<TimeModel>(
         builder: (context, timeModel, child) {
           return Text(
-              isHour ? "${timeModel.hour}:" : timeModel.minute,
-              style: GoogleFonts.openSans(
+              timeText,
+              textAlign: textAlign,
+              style: GoogleFonts.poppins(
                 textStyle: TextStyle(
                   color: Colors.white
                 ),
-                  fontSize: 170,
-                  fontWeight: isHour ? FontWeight.bold : FontWeight.normal
+                  fontSize: fontSize,
+                  fontWeight: fontWeight
               )
           );
         }

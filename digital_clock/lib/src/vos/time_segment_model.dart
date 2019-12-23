@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:digital_clock/src/utils/constants.dart';
 import 'package:flutter/widgets.dart';
 
 class TimeModel extends ChangeNotifier {
   DateTime _dateTime = DateTime.now();
   String _hour;
   String _minute;
+  String _seconds;
   int _timePassedInSeconds;
 
   TimeModel() {
@@ -14,11 +14,13 @@ class TimeModel extends ChangeNotifier {
 
   String get hour => _hour;
   String get minute => _minute;
+  String get seconds => _seconds;
   int get timePassed => _timePassedInSeconds;
 
   void _updateHour() {
     _hour = _parseTimeFormat(_dateTime.hour);
     _minute = _parseTimeFormat(_dateTime.minute);
+    _seconds = _parseTimeFormat(_dateTime.second);
     DateTime subtractedDateTime = _dateTime.subtract(Duration(hours: _dateTime.hour >= 18 || _dateTime.hour <= 6 ? 18 : 6));
     _timePassedInSeconds = (subtractedDateTime.hour * 60 * 60) + subtractedDateTime.minute * 60 + subtractedDateTime.second;
     print(_timePassedInSeconds);

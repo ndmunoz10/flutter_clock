@@ -7,6 +7,8 @@ import 'package:digital_clock/src/vos/time_segment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:simple_animations/simple_animations/multi_track_tween.dart';
 
 import 'vos/time_segment_model.dart';
 
@@ -37,28 +39,27 @@ class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderS
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    size.width;
+    final tween = MultiTrackTween([
+      Track("color1").add(Duration(seconds: 3),
+          ColorTween(begin: Color(0xff00003f), end: Color(0xff000058))),
+      Track("color2").add(Duration(seconds: 3),
+          ColorTween(begin: Color(0xff000072), end: Color(0xff00008b)))
+    ]);
     _initializeNodeList(context, size);
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Container(
+    return ControlledAnimation(
+      playback: Playback.MIRROR,
+      tween: tween,
+      duration: tween.duration,
+      builder: (context, animation) => Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            stops: [
-              0.1,
-              0.4,
-              0.6,
-              0.9
-            ],
-            colors: [
-              Color(0xff00003f),
-              Color(0xff00003f),
-              Color(0xff00003f),
-              Color(0xff00003f)
-            ]
-          )
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  animation["color1"],
+                  animation["color2"]
+                ]
+            )
         ),
         child: Stack(
           children: <Widget>[
@@ -78,11 +79,11 @@ class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderS
             Consumer<TimeModel>(
                 builder: (context, timeModel, child) => Positioned(
                   top: size.height * 0.15,
-                  right: (timeModel.timePassed / SECONDS_12H) * (size.width - 100),
+                  right: (timeModel.timePassed / SECONDS_12H) * (size.width - 130),
                   child: SvgPicture.asset(
-                      "assets/images/moon.svg",
-                      width: 100,
-                      height: 100
+                      "assets/images/moon_2.svg",
+                      width: 130,
+                      height: 130
                   ),
                 )
             ),
@@ -91,17 +92,32 @@ class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderS
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    TimeText(
-                      isHour: true,
-                    ),
-                    TimeText(
-                      isHour: false,
-                    )
-                  ],
+                Consumer<TimeModel>(
+                  builder: (context, timeModel, child) => Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      TimeText(
+                        timeText: timeModel.hour,
+                        fontSize: 144,
+                        fontWeight: FontWeight.bold,
+                        textAlign: TextAlign.end,
+                      ),
+                      TimeText(
+                        timeText: timeModel.minute,
+                        fontSize: 89,
+                        fontWeight: FontWeight.normal,
+                        textAlign: TextAlign.end,
+                      ),
+                      TimeText(
+                        timeText: timeModel.seconds,
+                        fontSize: 55,
+                        fontWeight: FontWeight.normal,
+                        textAlign: TextAlign.end,
+                      )
+                    ],
+                  ),
                 )
               ],
             )
@@ -116,12 +132,12 @@ class DigitalSandClockState extends State<DigitalSandClock> with TickerProviderS
     final flyingStarStart = ShootingStar(
         boundaries: size,
       currentStartingPosition: size.topLeft(Offset(size.width * 0.2, size.height * 0.1)),
-      currentEndingPosition: size.topLeft(Offset(size.width * 0.15, size.height * 0.15))
+      currentEndingPosition: size.topLeft(Offset(size.width * 0.17, size.height * 0.15))
     );
     final flyingStarCenter = ShootingStar(
         boundaries: size,
         currentStartingPosition: size.topCenter(Offset(0, size.height * 0.3)),
-        currentEndingPosition: size.topCenter(Offset(-30, size.height * 0.35))
+        currentEndingPosition: size.topCenter(Offset(-25, size.height * 0.35))
     );
     final flyingStarEnd = ShootingStar(
         boundaries: size,
