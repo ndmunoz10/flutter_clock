@@ -7,10 +7,12 @@ class ClockPainter extends CustomPainter {
 
   final List<Flying> flyingList;
   final Brightness brightness;
+  final bool isNight;
 
   ClockPainter({
     @required this.flyingList,
-    @required this.brightness
+    @required this.brightness,
+    @required this.isNight
   });
 
   void _drawStaticStars(Canvas canvas, Size size) {
@@ -27,7 +29,6 @@ class ClockPainter extends CustomPainter {
       Offset(width * 0.3, height * 0.3),
       Offset(width * 0.6, height * 0.5),
       Offset(width * 0.8, height * 0.7),
-      Offset(width * 0.9, height * 0.9),
       Offset(width * 0.9, height * 0.1),
       Offset(width * 0.8, height * 0.3),
       Offset(width * 0.8, height * 0.4),
@@ -53,9 +54,11 @@ class ClockPainter extends CustomPainter {
   }
 
   @override
-  void paint(Canvas canvas, Size size) async {
-    _drawStaticStars(canvas, size);
-    _drawFlyingElements(canvas);
+  void paint(Canvas canvas, Size size) {
+    if (isNight) {
+      _drawStaticStars(canvas, size);
+      _drawFlyingElements(canvas);
+    }
   }
 
   @override

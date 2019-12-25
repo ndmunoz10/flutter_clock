@@ -13,6 +13,7 @@ dependencies:
   google_fonts: ^0.2.0
   flutter_svg: ^0.13.0
   simple_animations: ^1.3.4
+  fluttie: ^0.3.0
 
 dev_dependencies:
   flutter_test:
@@ -22,5 +23,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/moon.svg
-    - assets/images/moon_2.svg
     - assets/images/sun.svg
+    - assets/animations/bird_animation.json
